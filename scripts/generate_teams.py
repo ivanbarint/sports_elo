@@ -1,9 +1,11 @@
+from pathlib import Path
 import csv
 import json
-from pathlib import Path
 
-INPUT_FILE = Path("data/nba/games_with_elo.csv")
-OUTPUT_FILE = Path("data/nba/teams.json")
+LEAGUE = "nba"
+
+INPUT_FILE = Path(f"data/{LEAGUE}/games_with_elo.csv")
+OUTPUT_FILE = Path(f"data/{LEAGUE}/{LEAGUE}_teams.json")
 
 
 def main():
@@ -15,7 +17,7 @@ def main():
         for row in reader:
             season = int(row["season"])
 
-            for side in ["home", "visitor"]:
+            for side in ("home", "visitor"):
                 team_id = row[f"{side}_team_id"]
                 team_name = row[f"{side}_team_name"]
 
@@ -24,20 +26,15 @@ def main():
                         "team_id": team_id,
                         "team_name": team_name,
                         "first_season": season,
-                        "last_season": season
+                        "last_season": season,
                     }
-
-                teams[team_id]["first_season"] = min(
-                    teams[team_id]["first_season"],
-                    season
-                )
-
-                teams[team_id]["last_season"] = max(
-                    teams[team_id]["last_season"],
-                    season
-                )
-
-                teams[team_id]["team_name"] = team_name
+                else:
+                    teams[team_id]["first_season"] = min(
+                        teams[team_id]["first_season"], season
+                    )
+                    teams[team_id]["last_season"] = max(
+                        teams[team_id]["last_season"], season
+                    )
 
     latest_season = max(team["last_season"] for team in teams.values())
 
@@ -47,7 +44,7 @@ def main():
         team["active"] = team["last_season"] == latest_season
         output.append(team)
 
-    output.sort(key=lambda x: (not x["active"], x["team_name"]))
+    output.sort(key=lambda x: x["team_name"])
 
     OUTPUT_FILE.parent.mkdir(parents=True, exist_ok=True)
 
@@ -55,8 +52,6 @@ def main():
         json.dump(output, f, indent=2, ensure_ascii=False)
 
     print(f"Generated {OUTPUT_FILE}")
-    print(f"Teams: {len(output)}")
-    print(f"Latest season: {latest_season}")
 
 
 if __name__ == "__main__":

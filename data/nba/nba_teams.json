@@ -1,0 +1,310 @@
+[
+  {
+    "team_id": "nba017",
+    "team_name": "Anderson Packers",
+    "first_season": 3,
+    "last_season": 3,
+    "active": false
+  },
+  {
+    "team_id": "nba012",
+    "team_name": "Baltimore Bullets",
+    "first_season": 1,
+    "last_season": 7,
+    "active": false
+  },
+  {
+    "team_id": "nba001",
+    "team_name": "Boston Celtics",
+    "first_season": 0,
+    "last_season": 80,
+    "active": true
+  },
+  {
+    "team_id": "nba030",
+    "team_name": "Buffalo Braves",
+    "first_season": 24,
+    "last_season": 80,
+    "active": true
+  },
+  {
+    "team_id": "nba038",
+    "team_name": "Charlotte Hornets",
+    "first_season": 42,
+    "last_season": 80,
+    "active": true
+  },
+  {
+    "team_id": "nba025",
+    "team_name": "Chicago Bulls",
+    "first_season": 20,
+    "last_season": 80,
+    "active": true
+  },
+  {
+    "team_id": "nba024",
+    "team_name": "Chicago Packers",
+    "first_season": 15,
+    "last_season": 80,
+    "active": true
+  },
+  {
+    "team_id": "nba002",
+    "team_name": "Chicago Stags",
+    "first_season": 0,
+    "last_season": 3,
+    "active": false
+  },
+  {
+    "team_id": "nba031",
+    "team_name": "Cleveland Cavaliers",
+    "first_season": 24,
+    "last_season": 80,
+    "active": true
+  },
+  {
+    "team_id": "nba003",
+    "team_name": "Cleveland Rebels",
+    "first_season": 0,
+    "last_season": 0,
+    "active": false
+  },
+  {
+    "team_id": "nba037",
+    "team_name": "Dallas Mavericks",
+    "first_season": 34,
+    "last_season": 80,
+    "active": true
+  },
+  {
+    "team_id": "nba018",
+    "team_name": "Denver Nuggets",
+    "first_season": 3,
+    "last_season": 3,
+    "active": false
+  },
+  {
+    "team_id": "nba004",
+    "team_name": "Detroit Falcons",
+    "first_season": 0,
+    "last_season": 0,
+    "active": false
+  },
+  {
+    "team_id": "nba013",
+    "team_name": "Fort Wayne Pistons",
+    "first_season": 2,
+    "last_season": 80,
+    "active": true
+  },
+  {
+    "team_id": "nba034",
+    "team_name": "Indiana Pacers",
+    "first_season": 30,
+    "last_season": 80,
+    "active": true
+  },
+  {
+    "team_id": "nba014",
+    "team_name": "Indianapolis Jets",
+    "first_season": 2,
+    "last_season": 2,
+    "active": false
+  },
+  {
+    "team_id": "nba019",
+    "team_name": "Indianapolis Olympians",
+    "first_season": 3,
+    "last_season": 6,
+    "active": false
+  },
+  {
+    "team_id": "nba039",
+    "team_name": "Miami Heat",
+    "first_season": 42,
+    "last_season": 80,
+    "active": true
+  },
+  {
+    "team_id": "nba028",
+    "team_name": "Milwaukee Bucks",
+    "first_season": 22,
+    "last_season": 80,
+    "active": true
+  },
+  {
+    "team_id": "nba015",
+    "team_name": "Minneapolis Lakers",
+    "first_season": 2,
+    "last_season": 80,
+    "active": true
+  },
+  {
+    "team_id": "nba041",
+    "team_name": "Minnesota Timberwolves",
+    "first_season": 43,
+    "last_season": 80,
+    "active": true
+  },
+  {
+    "team_id": "nba044",
+    "team_name": "New Orleans Hornets",
+    "first_season": 56,
+    "last_season": 80,
+    "active": true
+  },
+  {
+    "team_id": "nba033",
+    "team_name": "New Orleans Jazz",
+    "first_season": 28,
+    "last_season": 80,
+    "active": true
+  },
+  {
+    "team_id": "nba005",
+    "team_name": "New York Knicks",
+    "first_season": 0,
+    "last_season": 80,
+    "active": true
+  },
+  {
+    "team_id": "nba035",
+    "team_name": "New York Nets",
+    "first_season": 30,
+    "last_season": 80,
+    "active": true
+  },
+  {
+    "team_id": "nba040",
+    "team_name": "Orlando Magic",
+    "first_season": 43,
+    "last_season": 80,
+    "active": true
+  },
+  {
+    "team_id": "nba006",
+    "team_name": "Philadelphia Warriors",
+    "first_season": 0,
+    "last_season": 80,
+    "active": true
+  },
+  {
+    "team_id": "nba029",
+    "team_name": "Phoenix Suns",
+    "first_season": 22,
+    "last_season": 80,
+    "active": true
+  },
+  {
+    "team_id": "nba007",
+    "team_name": "Pittsburgh Ironmen",
+    "first_season": 0,
+    "last_season": 0,
+    "active": false
+  },
+  {
+    "team_id": "nba032",
+    "team_name": "Portland Trail Blazers",
+    "first_season": 24,
+    "last_season": 80,
+    "active": true
+  },
+  {
+    "team_id": "nba008",
+    "team_name": "Providence Steamrollers",
+    "first_season": 0,
+    "last_season": 2,
+    "active": false
+  },
+  {
+    "team_id": "nba016",
+    "team_name": "Rochester Royals",
+    "first_season": 2,
+    "last_season": 80,
+    "active": true
+  },
+  {
+    "team_id": "nba036",
+    "team_name": "San Antonio Spurs",
+    "first_season": 30,
+    "last_season": 80,
+    "active": true
+  },
+  {
+    "team_id": "nba026",
+    "team_name": "San Diego Rockets",
+    "first_season": 21,
+    "last_season": 80,
+    "active": true
+  },
+  {
+    "team_id": "nba027",
+    "team_name": "Seattle SuperSonics",
+    "first_season": 21,
+    "last_season": 80,
+    "active": true
+  },
+  {
+    "team_id": "nba020",
+    "team_name": "Sheboygan Red Skins",
+    "first_season": 3,
+    "last_season": 3,
+    "active": false
+  },
+  {
+    "team_id": "nba009",
+    "team_name": "St. Louis Bombers",
+    "first_season": 0,
+    "last_season": 3,
+    "active": false
+  },
+  {
+    "team_id": "nba021",
+    "team_name": "Syracuse Nationals",
+    "first_season": 3,
+    "last_season": 80,
+    "active": true
+  },
+  {
+    "team_id": "nba010",
+    "team_name": "Toronto Huskies",
+    "first_season": 0,
+    "last_season": 0,
+    "active": false
+  },
+  {
+    "team_id": "nba042",
+    "team_name": "Toronto Raptors",
+    "first_season": 49,
+    "last_season": 80,
+    "active": true
+  },
+  {
+    "team_id": "nba022",
+    "team_name": "Tri-Cities Blackhawks",
+    "first_season": 3,
+    "last_season": 80,
+    "active": true
+  },
+  {
+    "team_id": "nba043",
+    "team_name": "Vancouver Grizzlies",
+    "first_season": 49,
+    "last_season": 80,
+    "active": true
+  },
+  {
+    "team_id": "nba011",
+    "team_name": "Washington Capitols",
+    "first_season": 0,
+    "last_season": 4,
+    "active": false
+  },
+  {
+    "team_id": "nba023",
+    "team_name": "Waterloo Hawks",
+    "first_season": 3,
+    "last_season": 3,
+    "active": false
+  }
+]

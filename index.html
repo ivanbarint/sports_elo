@@ -1,61 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Sports Elo</title>
-</head>
-<body>
-  <h1>Sports Elo</h1>
-  <h2>Current NBA Elo Ratings</h2>
-
-  <p id="status">Loading data...</p>
-
-  <table border="1" cellpadding="8">
-    <thead>
-      <tr>
-        <th>Rank</th>
-        <th>Team</th>
-        <th>Elo</th>
-      </tr>
-    </thead>
-    <tbody id="rankings"></tbody>
-  </table>
-
-  <script>
-    async function loadRankings() {
-      const status = document.getElementById("status");
-      const tbody = document.getElementById("rankings");
-
-      try {
-        const response = await fetch("/data/nba/rankings.json");
-
-        if (!response.ok) {
-          throw new Error("Could not load rankings.json");
-        }
-
-        const rankings = await response.json();
-
-        tbody.innerHTML = "";
-
-        rankings.forEach(team => {
-          const row = document.createElement("tr");
-
-          row.innerHTML = `
-            <td>${team.rank}</td>
-            <td>${team.team_name}</td>
-            <td>${team.elo.toFixed(1)}</td>
-          `;
-
-          tbody.appendChild(row);
-        });
-
-        status.textContent = "Data loaded.";
-      } catch (error) {
-        status.textContent = "Error: " + error.message;
-      }
-    }
-
-    loadRankings();
-  </script>
-</body>
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Sports Elo</title>
+  </head>
+  <body>
+    <h1>Sports Elo</h1>
+    <p>NBA Elo data is online.</p>
+    <ul>
+      <li><a href="/data/nba/rankings.json">NBA rankings JSON</a></li>
+      <li><a href="/data/nba/metadata.json">NBA metadata JSON</a></li>
+    </ul>
+  </body>
 </html>
