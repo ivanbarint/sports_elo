@@ -1,167 +1,164 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sports Elo</title>
+  <meta charset="UTF-8">
+  <title>Sports Elo</title>
 </head>
 <body>
 
 <h1>Sports Elo</h1>
-
-<h1>Promjena</h1>
-
 <h2>NBA Elo Ratings</h2>
 
 <p>
-    Last game:
-    <span id="last-game">-</span>
+  Last game: <span id="last-game">-</span><br>
+  Games: <span id="games">-</span>
 </p>
-
-<p>
-    Games:
-    <span id="games">-</span>
-</p>
-
-<hr>
 
 <label for="date">Select date:</label>
 <input type="date" id="date">
-
 <button id="show-elo">Show Elo</button>
 
 <p id="status">Loading...</p>
 
 <table border="1" cellpadding="8">
-    <thead>
-        <tr>
-            <th>Rank</th>
-            <th>Team</th>
-            <th>Elo</th>
-        </tr>
-    </thead>
-
-    <tbody id="rankings"></tbody>
-
+  <thead>
+    <tr>
+      <th>Rank</th>
+      <th>Team</th>
+      <th>Elo</th>
+    </tr>
+  </thead>
+  <tbody id="rankings"></tbody>
 </table>
 
 <script>
-
+let metadata = null;
+let teams = [];
 let historicalData = null;
 
+async function fetchJson(path) {
+  const response = await fetch(path);
+
+  if (!response.ok) {
+    throw new Error(`Could not load ${path}`);
+  }
+
+  return await response.json();
+}
+
+function getActiveTeamIds() {
+  return new Set(
+    teams
+      .filter(team => team.active === true)
+      .map(team => team.team_id)
+  );
+}
+
+function filterActiveTeams(rankings) {
+  const activeTeamIds = getActiveTeamIds();
+
+  if (activeTeamIds.size === 0) {
+    return rankings;
+  }
+
+  return rankings
+    .filter(team => activeTeamIds.has(team.team_id))
+    .map((team, index) => ({
+      ...team,
+      rank: index + 1
+    }));
+}
+
 function renderRankings(rankings) {
+  const tbody = document.getElementById("rankings");
+  tbody.innerHTML = "";
 
-    const tbody = document.getElementById("rankings");
+  rankings.forEach(team => {
+    const row = document.createElement("tr");
 
-    tbody.innerHTML = "";
+    row.innerHTML = `
+      <td>${team.rank}</td>
+      <td>${team.team_name}</td>
+      <td>${Number(team.elo).toFixed(1)}</td>
+    `;
 
-    rankings.forEach(team => {
-
-        const row = document.createElement("tr");
-
-        row.innerHTML = `
-            <td>${team.rank}</td>
-            <td>${team.team_name}</td>
-            <td>${Number(team.elo).toFixed(1)}</td>
-        `;
-
-        tbody.appendChild(row);
-
-    });
-
+    tbody.appendChild(row);
+  });
 }
 
 async function loadMetadata() {
+  metadata = await fetchJson("/data/nba/metadata.json");
 
-    const response = await fetch("/data/nba/metadata.json");
-    const metadata = await response.json();
+  document.getElementById("last-game").textContent = metadata.last_game_date;
+  document.getElementById("games").textContent = metadata.games.toLocaleString();
+  document.getElementById("date").value = metadata.last_game_date;
+}
 
-    document.getElementById("games").textContent =
-        metadata.games.toLocaleString();
+async function loadTeams() {
+  try {
+    teams = await fetchJson("/data/nba/nba_teams.json");
+  } catch {
+    teams = [];
+  }
+}
 
-    document.getElementById("last-game").textContent =
-        metadata.last_game_date;
-
-    document.getElementById("date").value =
-        metadata.last_game_date;
-
+async function loadHistoricalData() {
+  historicalData = await fetchJson("/data/nba/nba_elo_by_date.json");
 }
 
 async function loadCurrentRankings() {
+  const rankings = await fetchJson("/data/nba/rankings.json");
+  const activeRankings = filterActiveTeams(rankings);
 
-    const response =
-        await fetch("/data/nba/rankings.json");
+  renderRankings(activeRankings);
 
-    const rankings =
-        await response.json();
-
-    renderRankings(rankings);
-
-    document.getElementById("status").textContent =
-        "Showing current Elo ratings.";
-
+  document.getElementById("status").textContent =
+    "Showing current active NBA Elo ratings.";
 }
 
-async function loadHistoricalFile() {
+function showEloForDate() {
+  const selectedDate = document.getElementById("date").value;
 
-    const response =
-        await fetch("/data/nba/nba_elo_by_date.json");
+  if (!selectedDate) {
+    document.getElementById("status").textContent = "Please select a date.";
+    return;
+  }
 
-    historicalData =
-        await response.json();
+  if (!historicalData) {
+    document.getElementById("status").textContent = "Historical data is not loaded yet.";
+    return;
+  }
 
+  const rankings = historicalData[selectedDate];
+
+  if (!rankings) {
+    document.getElementById("status").textContent = `No Elo data for ${selectedDate}.`;
+    renderRankings([]);
+    return;
+  }
+
+  const activeRankings = filterActiveTeams(rankings);
+
+  renderRankings(activeRankings);
+
+  document.getElementById("status").textContent =
+    `Showing NBA Elo ratings for ${selectedDate}.`;
 }
 
-function showHistoricalRatings() {
-
-    const selectedDate =
-        document.getElementById("date").value;
-
-    if (!selectedDate) {
-
-        alert("Please choose a date.");
-
-        return;
-
-    }
-
-    const rankings =
-        historicalData[selectedDate];
-
-    if (!rankings) {
-
-        document.getElementById("status").textContent =
-            `No data for ${selectedDate}.`;
-
-        document.getElementById("rankings").innerHTML = "";
-
-        return;
-
-    }
-
-    renderRankings(rankings);
-
-    document.getElementById("status").textContent =
-        `Showing Elo ratings for ${selectedDate}.`;
-
-}
-
-document
-    .getElementById("show-elo")
-    .addEventListener("click", showHistoricalRatings);
+document.getElementById("show-elo").addEventListener("click", showEloForDate);
 
 async function init() {
-
+  try {
     await loadMetadata();
-
+    await loadTeams();
+    await loadHistoricalData();
     await loadCurrentRankings();
-
-    await loadHistoricalFile();
-
+  } catch (error) {
+    document.getElementById("status").textContent = "Error: " + error.message;
+  }
 }
 
 init();
-
 </script>
 
 </body>
