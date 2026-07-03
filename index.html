@@ -1,15 +1,135 @@
-<!doctype html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <title>Sports Elo</title>
-  </head>
-  <body>
-    <h1>Sports Elo</h1>
-    <p>NBA Elo data is online.</p>
-    <ul>
-      <li><a href="/data/nba/rankings.json">NBA rankings JSON</a></li>
-      <li><a href="/data/nba/metadata.json">NBA metadata JSON</a></li>
-    </ul>
-  </body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sports Elo</title>
+</head>
+<body>
+
+  <h1>Sports Elo</h1>
+  <h2>NBA Elo Ratings</h2>
+
+  <p>
+    Last game: <span id="last-game">-</span><br>
+    Total games: <span id="games">-</span>
+  </p>
+
+  <h3>Select date</h3>
+
+  <label>
+    Day:
+    <input id="day" type="number" min="1" max="31" placeholder="13">
+  </label>
+
+  <label>
+    Month:
+    <input id="month" type="number" min="1" max="12" placeholder="6">
+  </label>
+
+  <label>
+    Year:
+    <input id="year" type="number" min="1946" placeholder="2026">
+  </label>
+
+  <button id="load-date">Show Elo</button>
+
+  <p id="status">Loading current ratings...</p>
+
+  <table border="1" cellpadding="8">
+    <thead>
+      <tr>
+        <th>Rank</th>
+        <th>Team</th>
+        <th>Elo</th>
+      </tr>
+    </thead>
+    <tbody id="rankings"></tbody>
+  </table>
+
+  <script>
+    async function loadMetadata() {
+      const response = await fetch("/data/nba/metadata.json");
+      const metadata = await response.json();
+
+      document.getElementById("last-game").textContent = metadata.last_game_date;
+      document.getElementById("games").textContent = metadata.games.toLocaleString();
+
+      const [year, month, day] = metadata.last_game_date.split("-");
+
+      document.getElementById("year").value = Number(year);
+      document.getElementById("month").value = Number(month);
+      document.getElementById("day").value = Number(day);
+    }
+
+    function renderRankings(rankings) {
+      const tbody = document.getElementById("rankings");
+      tbody.innerHTML = "";
+
+      rankings.forEach(team => {
+        const row = document.createElement("tr");
+
+        row.innerHTML = `
+          <td>${team.rank}</td>
+          <td>${team.team_name}</td>
+          <td>${Number(team.elo).toFixed(1)}</td>
+        `;
+
+        tbody.appendChild(row);
+      });
+    }
+
+    async function loadCurrentRankings() {
+      const status = document.getElementById("status");
+
+      const response = await fetch("/data/nba/rankings.json");
+      const rankings = await response.json();
+
+      renderRankings(rankings);
+      status.textContent = "Showing current NBA Elo ratings.";
+    }
+
+    async function loadRatingsForDate() {
+      const status = document.getElementById("status");
+
+      const day = String(document.getElementById("day").value).padStart(2, "0");
+      const month = String(document.getElementById("month").value).padStart(2, "0");
+      const year = document.getElementById("year").value;
+
+      const selectedDate = `${year}-${month}-${day}`;
+
+      try {
+        const response = await fetch("/data/nba/nba_elo_by_date.json");
+
+        if (!response.ok) {
+          throw new Error("Historical Elo file not found.");
+        }
+
+        const eloByDate = await response.json();
+        const rankings = eloByDate[selectedDate];
+
+        if (!rankings) {
+          status.textContent = `No Elo data found for ${selectedDate}.`;
+          renderRankings([]);
+          return;
+        }
+
+        renderRankings(rankings);
+        status.textContent = `Showing NBA Elo ratings for ${selectedDate}.`;
+
+      } catch (error) {
+        status.textContent = "Error: " + error.message;
+      }
+    }
+
+    document.getElementById("load-date").addEventListener("click", loadRatingsForDate);
+
+    async function init() {
+      await loadMetadata();
+      await loadCurrentRankings();
+    }
+
+    init();
+  </script>
+
+</body>
 </html>
