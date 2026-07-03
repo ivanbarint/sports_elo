@@ -1,135 +1,166 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Sports Elo</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sports Elo</title>
 </head>
 <body>
 
-  <h1>Sports Elo</h1>
-  <h2>NBA Elo Ratings</h2>
+<h1>Sports Elo</h1>
 
-  <p>
-    Last game: <span id="last-game">-</span><br>
-    Total games: <span id="games">-</span>
-  </p>
+<h2>NBA Elo Ratings</h2>
 
-  <h3>Select date</h3>
+<p>
+    Last game:
+    <span id="last-game">-</span>
+</p>
 
-  <label>
-    Day:
-    <input id="day" type="number" min="1" max="31" placeholder="13">
-  </label>
+<p>
+    Games:
+    <span id="games">-</span>
+</p>
 
-  <label>
-    Month:
-    <input id="month" type="number" min="1" max="12" placeholder="6">
-  </label>
+<hr>
 
-  <label>
-    Year:
-    <input id="year" type="number" min="1946" placeholder="2026">
-  </label>
+<label for="date">Select date:</label>
+<input type="date" id="date">
 
-  <button id="load-date">Show Elo</button>
+<button id="show-elo">Show Elo</button>
 
-  <p id="status">Loading current ratings...</p>
+<p id="status">Loading...</p>
 
-  <table border="1" cellpadding="8">
+<table border="1" cellpadding="8">
     <thead>
-      <tr>
-        <th>Rank</th>
-        <th>Team</th>
-        <th>Elo</th>
-      </tr>
+        <tr>
+            <th>Rank</th>
+            <th>Team</th>
+            <th>Elo</th>
+        </tr>
     </thead>
+
     <tbody id="rankings"></tbody>
-  </table>
 
-  <script>
-    async function loadMetadata() {
-      const response = await fetch("/data/nba/metadata.json");
-      const metadata = await response.json();
+</table>
 
-      document.getElementById("last-game").textContent = metadata.last_game_date;
-      document.getElementById("games").textContent = metadata.games.toLocaleString();
+<script>
 
-      const [year, month, day] = metadata.last_game_date.split("-");
+let historicalData = null;
 
-      document.getElementById("year").value = Number(year);
-      document.getElementById("month").value = Number(month);
-      document.getElementById("day").value = Number(day);
-    }
+function renderRankings(rankings) {
 
-    function renderRankings(rankings) {
-      const tbody = document.getElementById("rankings");
-      tbody.innerHTML = "";
+    const tbody = document.getElementById("rankings");
 
-      rankings.forEach(team => {
+    tbody.innerHTML = "";
+
+    rankings.forEach(team => {
+
         const row = document.createElement("tr");
 
         row.innerHTML = `
-          <td>${team.rank}</td>
-          <td>${team.team_name}</td>
-          <td>${Number(team.elo).toFixed(1)}</td>
+            <td>${team.rank}</td>
+            <td>${team.team_name}</td>
+            <td>${Number(team.elo).toFixed(1)}</td>
         `;
 
         tbody.appendChild(row);
-      });
+
+    });
+
+}
+
+async function loadMetadata() {
+
+    const response = await fetch("/data/nba/metadata.json");
+    const metadata = await response.json();
+
+    document.getElementById("games").textContent =
+        metadata.games.toLocaleString();
+
+    document.getElementById("last-game").textContent =
+        metadata.last_game_date;
+
+    document.getElementById("date").value =
+        metadata.last_game_date;
+
+}
+
+async function loadCurrentRankings() {
+
+    const response =
+        await fetch("/data/nba/rankings.json");
+
+    const rankings =
+        await response.json();
+
+    renderRankings(rankings);
+
+    document.getElementById("status").textContent =
+        "Showing current Elo ratings.";
+
+}
+
+async function loadHistoricalFile() {
+
+    const response =
+        await fetch("/data/nba/nba_elo_by_date.json");
+
+    historicalData =
+        await response.json();
+
+}
+
+function showHistoricalRatings() {
+
+    const selectedDate =
+        document.getElementById("date").value;
+
+    if (!selectedDate) {
+
+        alert("Please choose a date.");
+
+        return;
+
     }
 
-    async function loadCurrentRankings() {
-      const status = document.getElementById("status");
+    const rankings =
+        historicalData[selectedDate];
 
-      const response = await fetch("/data/nba/rankings.json");
-      const rankings = await response.json();
+    if (!rankings) {
 
-      renderRankings(rankings);
-      status.textContent = "Showing current NBA Elo ratings.";
+        document.getElementById("status").textContent =
+            `No data for ${selectedDate}.`;
+
+        document.getElementById("rankings").innerHTML = "";
+
+        return;
+
     }
 
-    async function loadRatingsForDate() {
-      const status = document.getElementById("status");
+    renderRankings(rankings);
 
-      const day = String(document.getElementById("day").value).padStart(2, "0");
-      const month = String(document.getElementById("month").value).padStart(2, "0");
-      const year = document.getElementById("year").value;
+    document.getElementById("status").textContent =
+        `Showing Elo ratings for ${selectedDate}.`;
 
-      const selectedDate = `${year}-${month}-${day}`;
+}
 
-      try {
-        const response = await fetch("/data/nba/nba_elo_by_date.json");
+document
+    .getElementById("show-elo")
+    .addEventListener("click", showHistoricalRatings);
 
-        if (!response.ok) {
-          throw new Error("Historical Elo file not found.");
-        }
+async function init() {
 
-        const eloByDate = await response.json();
-        const rankings = eloByDate[selectedDate];
+    await loadMetadata();
 
-        if (!rankings) {
-          status.textContent = `No Elo data found for ${selectedDate}.`;
-          renderRankings([]);
-          return;
-        }
+    await loadCurrentRankings();
 
-        renderRankings(rankings);
-        status.textContent = `Showing NBA Elo ratings for ${selectedDate}.`;
+    await loadHistoricalFile();
 
-      } catch (error) {
-        status.textContent = "Error: " + error.message;
-      }
-    }
+}
 
-    document.getElementById("load-date").addEventListener("click", loadRatingsForDate);
+init();
 
-    async function init() {
-      await loadMetadata();
-      await loadCurrentRankings();
-    }
-
-    init();
-  </script>
+</script>
 
 </body>
 </html>
