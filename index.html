@@ -14,8 +14,18 @@
   Games: <span id="games">-</span>
 </p>
 
-<label for="date">Select date:</label>
-<input type="date" id="date">
+<label>Year:
+  <input id="year" type="number" min="1946">
+</label>
+
+<label>Month:
+  <input id="month" type="number" min="1" max="12">
+</label>
+
+<label>Day:
+  <input id="day" type="number" min="1" max="31">
+</label>
+
 <button id="show-elo">Show Elo</button>
 
 <p id="status">Loading...</p>
@@ -40,13 +50,13 @@ async function fetchJson(path) {
   const response = await fetch(path);
 
   if (!response.ok) {
-    throw new Error(`Could not load ${path}`);
+    throw new Error("Could not load " + path);
   }
 
   return await response.json();
 }
 
-function getActiveTeamIds() {
+function activeTeamIds() {
   return new Set(
     teams
       .filter(team => team.active === true)
@@ -54,15 +64,15 @@ function getActiveTeamIds() {
   );
 }
 
-function filterActiveTeams(rankings) {
-  const activeTeamIds = getActiveTeamIds();
+function filterCurrentTeams(rankings) {
+  const activeIds = activeTeamIds();
 
-  if (activeTeamIds.size === 0) {
+  if (activeIds.size === 0) {
     return rankings;
   }
 
   return rankings
-    .filter(team => activeTeamIds.has(team.team_id))
+    .filter(team => activeIds.has(team.team_id))
     .map((team, index) => ({
       ...team,
       rank: index + 1
@@ -91,70 +101,73 @@ async function loadMetadata() {
 
   document.getElementById("last-game").textContent = metadata.last_game_date;
   document.getElementById("games").textContent = metadata.games.toLocaleString();
-  document.getElementById("date").value = metadata.last_game_date;
+
+  const parts = metadata.last_game_date.split("-");
+
+  document.getElementById("year").value = parts[0];
+  document.getElementById("month").value = Number(parts[1]);
+  document.getElementById("day").value = Number(parts[2]);
 }
 
 async function loadTeams() {
   try {
     teams = await fetchJson("/data/nba/nba_teams.json");
-  } catch {
+  } catch (error) {
     teams = [];
   }
 }
 
-async function loadHistoricalData() {
-  historicalData = await fetchJson("/data/nba/nba_elo_by_date.json");
-}
-
 async function loadCurrentRankings() {
   const rankings = await fetchJson("/data/nba/rankings.json");
-  const activeRankings = filterActiveTeams(rankings);
+  const filtered = filterCurrentTeams(rankings);
 
-  renderRankings(activeRankings);
+  renderRankings(filtered);
 
   document.getElementById("status").textContent =
-    "Showing current active NBA Elo ratings.";
+    "Showing current NBA Elo ratings.";
 }
 
-function showEloForDate() {
-  const selectedDate = document.getElementById("date").value;
+async function showEloForDate() {
+  const year = document.getElementById("year").value;
+  const month = String(document.getElementById("month").value).padStart(2, "0");
+  const day = String(document.getElementById("day").value).padStart(2, "0");
 
-  if (!selectedDate) {
-    document.getElementById("status").textContent = "Please select a date.";
-    return;
-  }
+  const selectedDate = `${year}-${month}-${day}`;
+
+  document.getElementById("status").textContent =
+    "Loading historical Elo ratings...";
 
   if (!historicalData) {
-    document.getElementById("status").textContent = "Historical data is not loaded yet.";
-    return;
+    historicalData = await fetchJson("/data/nba/nba_elo_by_date.json");
   }
 
   const rankings = historicalData[selectedDate];
 
   if (!rankings) {
-    document.getElementById("status").textContent = `No Elo data for ${selectedDate}.`;
     renderRankings([]);
+    document.getElementById("status").textContent =
+      `No Elo data for ${selectedDate}.`;
     return;
   }
 
-  const activeRankings = filterActiveTeams(rankings);
-
-  renderRankings(activeRankings);
+  renderRankings(rankings);
 
   document.getElementById("status").textContent =
     `Showing NBA Elo ratings for ${selectedDate}.`;
 }
 
-document.getElementById("show-elo").addEventListener("click", showEloForDate);
+document
+  .getElementById("show-elo")
+  .addEventListener("click", showEloForDate);
 
 async function init() {
   try {
     await loadMetadata();
     await loadTeams();
-    await loadHistoricalData();
     await loadCurrentRankings();
   } catch (error) {
-    document.getElementById("status").textContent = "Error: " + error.message;
+    document.getElementById("status").textContent =
+      "Error: " + error.message;
   }
 }
 
