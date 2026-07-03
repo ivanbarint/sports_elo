@@ -1,0 +1,266 @@
+[
+  {
+    "rank":1,
+    "team_id":"nba005",
+    "team_name":"New York Knicks",
+    "elo":1773.4
+  },
+  {
+    "rank":2,
+    "team_id":"nba027",
+    "team_name":"Oklahoma City Thunder",
+    "elo":1764.8
+  },
+  {
+    "rank":3,
+    "team_id":"nba036",
+    "team_name":"San Antonio Spurs",
+    "elo":1729.4
+  },
+  {
+    "rank":4,
+    "team_id":"nba013",
+    "team_name":"Detroit Pistons",
+    "elo":1649.6
+  },
+  {
+    "rank":5,
+    "team_id":"nba001",
+    "team_name":"Boston Celtics",
+    "elo":1645.9
+  },
+  {
+    "rank":6,
+    "team_id":"nba031",
+    "team_name":"Cleveland Cavaliers",
+    "elo":1605.3
+  },
+  {
+    "rank":7,
+    "team_id":"nba015",
+    "team_name":"Los Angeles Lakers",
+    "elo":1605.3
+  },
+  {
+    "rank":8,
+    "team_id":"nba038",
+    "team_name":"Charlotte Hornets",
+    "elo":1592.9
+  },
+  {
+    "rank":9,
+    "team_id":"nba041",
+    "team_name":"Minnesota Timberwolves",
+    "elo":1583.1
+  },
+  {
+    "rank":10,
+    "team_id":"nba026",
+    "team_name":"Houston Rockets",
+    "elo":1581.5
+  },
+  {
+    "rank":11,
+    "team_id":"nba040",
+    "team_name":"Orlando Magic",
+    "elo":1562.1
+  },
+  {
+    "rank":12,
+    "team_id":"nba022",
+    "team_name":"Atlanta Hawks",
+    "elo":1559.5
+  },
+  {
+    "rank":13,
+    "team_id":"nba017",
+    "team_name":"Anderson Packers",
+    "elo":1557.8
+  },
+  {
+    "rank":14,
+    "team_id":"nba002",
+    "team_name":"Chicago Stags",
+    "elo":1553.1
+  },
+  {
+    "rank":15,
+    "team_id":"nba021",
+    "team_name":"Philadelphia 76ers",
+    "elo":1549.2
+  },
+  {
+    "rank":16,
+    "team_id":"nba042",
+    "team_name":"Toronto Raptors",
+    "elo":1538.3
+  },
+  {
+    "rank":17,
+    "team_id":"nba032",
+    "team_name":"Portland Trail Blazers",
+    "elo":1529.9
+  },
+  {
+    "rank":18,
+    "team_id":"nba030",
+    "team_name":"Los Angeles Clippers",
+    "elo":1527.4
+  },
+  {
+    "rank":19,
+    "team_id":"nba039",
+    "team_name":"Miami Heat",
+    "elo":1506.9
+  },
+  {
+    "rank":20,
+    "team_id":"nba034",
+    "team_name":"Denver Nuggets",
+    "elo":1500.3
+  },
+  {
+    "rank":21,
+    "team_id":"nba003",
+    "team_name":"Cleveland Rebels",
+    "elo":1497.3
+  },
+  {
+    "rank":22,
+    "team_id":"nba029",
+    "team_name":"Phoenix Suns",
+    "elo":1492.9
+  },
+  {
+    "rank":23,
+    "team_id":"nba019",
+    "team_name":"Indianapolis Olympians",
+    "elo":1448.4
+  },
+  {
+    "rank":24,
+    "team_id":"nba009",
+    "team_name":"St. Louis Bombers",
+    "elo":1443.8
+  },
+  {
+    "rank":25,
+    "team_id":"nba006",
+    "team_name":"Golden State Warriors",
+    "elo":1420.5
+  },
+  {
+    "rank":26,
+    "team_id":"nba023",
+    "team_name":"Waterloo Hawks",
+    "elo":1409.0
+  },
+  {
+    "rank":27,
+    "team_id":"nba010",
+    "team_name":"Toronto Huskies",
+    "elo":1407.0
+  },
+  {
+    "rank":28,
+    "team_id":"nba011",
+    "team_name":"Washington Capitols",
+    "elo":1404.4
+  },
+  {
+    "rank":29,
+    "team_id":"nba014",
+    "team_name":"Indianapolis Jets",
+    "elo":1388.1
+  },
+  {
+    "rank":30,
+    "team_id":"nba044",
+    "team_name":"New Orleans Pelicans",
+    "elo":1384.3
+  },
+  {
+    "rank":31,
+    "team_id":"nba028",
+    "team_name":"Milwaukee Bucks",
+    "elo":1381.1
+  },
+  {
+    "rank":32,
+    "team_id":"nba020",
+    "team_name":"Sheboygan Red Skins",
+    "elo":1374.6
+  },
+  {
+    "rank":33,
+    "team_id":"nba004",
+    "team_name":"Detroit Falcons",
+    "elo":1369.9
+  },
+  {
+    "rank":34,
+    "team_id":"nba025",
+    "team_name":"Chicago Bulls",
+    "elo":1349.9
+  },
+  {
+    "rank":35,
+    "team_id":"nba037",
+    "team_name":"Dallas Mavericks",
+    "elo":1346.0
+  },
+  {
+    "rank":36,
+    "team_id":"nba016",
+    "team_name":"Sacramento Kings",
+    "elo":1338.3
+  },
+  {
+    "rank":37,
+    "team_id":"nba007",
+    "team_name":"Pittsburgh Ironmen",
+    "elo":1306.8
+  },
+  {
+    "rank":38,
+    "team_id":"nba008",
+    "team_name":"Providence Steamrollers",
+    "elo":1303.4
+  },
+  {
+    "rank":39,
+    "team_id":"nba018",
+    "team_name":"Denver Nuggets",
+    "elo":1276.5
+  },
+  {
+    "rank":40,
+    "team_id":"nba043",
+    "team_name":"Memphis Grizzlies",
+    "elo":1274.2
+  },
+  {
+    "rank":41,
+    "team_id":"nba035",
+    "team_name":"Brooklyn Nets",
+    "elo":1271.0
+  },
+  {
+    "rank":42,
+    "team_id":"nba012",
+    "team_name":"Baltimore Bullets",
+    "elo":1264.5
+  },
+  {
+    "rank":43,
+    "team_id":"nba033",
+    "team_name":"Utah Jazz",
+    "elo":1259.1
+  },
+  {
+    "rank":44,
+    "team_id":"nba024",
+    "team_name":"Washington Wizards",
+    "elo":1211.0
+  }
+]
